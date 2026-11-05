@@ -1,0 +1,68 @@
+[paths]
+structures = "../generate_particles/out/particles.traj"
+experimental_data = "../../data/experimental_scattering.h5"
+relax_dir = "../relax/relax"
+md_dir = "md"
+iq_dir = "iq"
+fits_dir = "fits"
+model = "../../model/mace_stagetwo.model"
+
+[scattering]
+qmin = 0.1810548
+qmax = 17.1540611
+qstep = 0.0074508362
+qdamp = 0.023
+rmin = 0.0
+rmax = 60.000001
+rstep = 0.01
+biso = 0.0
+batch_size = 16_777_216  # 4096*4096
+
+[reference]
+q_ref_min = 0.201172
+q_ref_max = 15.594601
+q_ref_step = 0.0074508362
+
+[relax]
+fmax = 0.001
+
+[molecular_dynamics]
+nsteps = 6000
+timestep_fs = 5.0
+temperature_K = 250
+trajinterval = 200
+loginterval = 20
+
+[hardware]
+device = "cuda"
+gpu_monitor_interval = 10.0
+cuda_nb_list = true
+compile_mode = "default"
+
+[scheduler]
+iq_resources = "s:8:1G:sm3090el9:5h"
+fit_resources = "s:1:xeon24el8:1h"
+gather_resources = "s:1:xeon24el8:1h"
+fit_batch_size = 100
+md_job_hours = 5
+
+[[scheduler.partitions]]
+min_atoms = 0
+max_atoms = 15_000
+batch_sizes = [1, 2, 4]
+resources = "s:8:1G:sm3090el9:50h"
+mace_speed = 80_000
+
+[[scheduler.partitions]]
+min_atoms = 15_000
+max_atoms = 40000
+batch_sizes = [1, 2, 4]
+resources = "s:32:1G:a100el9:50h"
+mace_speed = 120_000
+
+[[scheduler.partitions]]
+min_atoms = 40000
+max_atoms = 120000
+batch_sizes = [1, 2, 3, 4]
+resources = "s:24:1G:h200el9:50h"
+mace_speed = 300_000

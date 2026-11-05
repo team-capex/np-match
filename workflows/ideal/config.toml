@@ -1,0 +1,35 @@
+# Paths relative to the directory containing this config.toml file
+[paths]
+structures = "../generate_particles/out/particles.traj"
+experimental_data = "../../data/experimental_scattering.h5"
+iq_dir = "iq"
+fits_dir = "fits"
+
+# DebyeCalculator parameters
+[scattering]
+qmin = 0.1810548
+qmax = 17.1540611
+qstep = 0.0074508362
+qdamp = 0.023
+rmin = 0.0
+rmax = 60.000001
+rstep = 0.01
+biso = 0.0
+batch_size = 16_777_216  # 4096*4096
+
+[reference]
+q_ref_min = 0.201172
+q_ref_max = 15.594601
+q_ref_step = 0.0074508362
+
+[hardware]
+device = "cuda"
+gpu_monitor_interval = 10.0
+debye_time_prefactor = 2.26e-11  # seconds; time = prefactor * N^2
+
+[scheduler]
+iq_resources = "s:8:1G:sm3090el9_devel:1h"
+fit_resources = "s:1:xeon24el8:1h"
+gather_resources = "s:1:xeon24el8:1h"
+fit_batch_size = 100
+iq_job_time = 300  # seconds

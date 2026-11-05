@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "np-match"
+version = "0.1.0"
+description = "Debye scattering calculations and nanoparticle workflows"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {file = "LICENSE"}
+dependencies = [
+    "ase",
+    "numpy",
+    "PyYAML",
+    "torch>=2.0",
+]
+
+[project.optional-dependencies]
+analysis = ["h5py", "scipy", "matplotlib", "pandas"]
+mace = ["mace-torch"]
+d3 = ["torch-dftd"]
+test = ["h5py", "scipy", "pytest", "matscipy"]
+workflow = ["h5py", "scipy", "tqdm", "mpi4py", "perqueue"]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+np_match = ["debye/elements_info.yaml"]
